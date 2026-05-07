@@ -1,16 +1,30 @@
-def main():
-    print("Hello from case-koin!")
+from src.extract_data import extract_data
+from src.transform_data import data_transformation
+from src.load_data import save_data
+from pathlib import Path
+import logging
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-if __name__ == "__main__":
-    main()
+schemas = ["customers", "orders"]
 
+def pipeline(schema: str):
+    try:
+        logging.info(f"First stage: Extracting <{schema}>")
+        df = extract_data(schema=schema)
 
+        logging.info(f"Second stage: Transforming <{schema}>")
+        df = data_transformation(df, schema=schema)
 
+        logging.info(f"Last stage: Loading <{schema}>")
+        save_data(df, schema=schema)
 
+        print(f"Pipeline for <{schema}> fully completed! \n")
 
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
 
-
-
-def save_data(df: pd.DataFrame, output_path: str) -> pd.DataFrame:
-   return df.to_csv(output_path, index=False, sep=",", encoding="utf-8")
+for item in schemas:
+    pipeline(item)
