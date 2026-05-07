@@ -21,8 +21,8 @@ def anonymize_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
 def transform_customers_data(df: pd.DataFrame) -> pd.DataFrame:
     df["name"] = df["name"].str.title() #Capitaliza as primeiras letras
     df["phone"] = df["phone"].astype("str") #Remove a notação científica do telefone
-    df["created_at"] = df["created_at"].astype("datetime64[s]") #Transforma para data
-    df["city"] = df["city"].str.title() #Capitaliza as primeiras letras 
+    df["created_at"] = df["created_at"].astype("datetime64[s]") #Transforma para data hora
+    df["city"] = df["city"].str.title()
     df.fillna({ #Retira os NaN e troca por outro valor
             "email": "unknown", 
             "phone": "unknown", 
@@ -54,12 +54,10 @@ def clean_data(df: pd.DataFrame, schema) -> pd.DataFrame:
     #quality check here
 
     if schema == "customers":
-        transform_customers_data(df)
+       return transform_customers_data(df)
     
     elif schema == "orders":
-        transform_orders_data(df)
-    
-    return df
+       return transform_orders_data(df)
 
 def rename_columns(df: pd.DataFrame, schema: dict) -> pd.DataFrame:
     if schema == "customers":
