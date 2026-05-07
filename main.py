@@ -12,14 +12,19 @@ def pipeline(schema: str):
     try:
         logging.info(f"First stage: Extracting <{schema}>")
         df = extract_data(schema=schema)
+        logging.info(f"Rows extracted: {len(df)}")
 
         logging.info(f"Second stage: Transforming <{schema}>")
+        before = len(df)
         df = data_transformation(df, schema=schema)
+        after = len(df)
+        logging.info(f"Rows removed: {before - after}")
 
-        logging.info(f"Last stage: Loading <{schema}>")
+        logging.info(f"Last stage: Loading <{schema}> \n")
         save_data(df, schema=schema)
 
-        print(f"Pipeline for <{schema}> fully completed! \n")
+        logging.info(f"Pipeline for <{schema}> fully completed!")
+        logging.info(f"Saved rows: {after}\n")
 
     except Exception as e:
         logging.error(f"Error: {e}")
