@@ -95,7 +95,7 @@ Erros em qualquer etapa são capturados, registrados em log e o traceback comple
 
 1. Dados persistidos salvos em arquivo ao invés de transportar via memória
 2. Separação clara dos arquivos em pastas
-3. Utilização da arquitetura Medalhão para entendimento de camadas de dados
+3. Utilização da arquitetura Medalhão para melhor entendimento das camadas de dados
 4. Utilização do pandas para fazer o ETL
 5. Finalização com o modelo dimensional Star Schema, possuindo tabelas dimensão e tabelas fato, unificando em um datamart analítico.
 6. Utilização do pacote UV para facilitar a criação do ambiente.
