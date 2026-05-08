@@ -91,7 +91,7 @@ Erros em qualquer etapa são capturados, registrados em log e o traceback comple
 
 ---
 
-## Principais decisões tomadas:
+## Principais decisões tomadas
 
 1. Dados persistidos salvos em arquivo ao invés de transportar via memória
 2. Separação clara dos arquivos em pastas
