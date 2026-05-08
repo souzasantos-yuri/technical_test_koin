@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-def save_data(df: pd.DataFrame, schema: str) -> None:
+def load_data(df: pd.DataFrame, schema: str) -> None:
     """
     Saves the new transformed data in a CSV file.
     """

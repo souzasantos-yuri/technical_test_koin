@@ -31,9 +31,9 @@ def anonymize_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
 
 def transform_customers_data(df: pd.DataFrame) -> pd.DataFrame:
     df["phone"] = df["phone"].astype(str)
-    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce") #Transforma para data hora
+    df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
     df["city"] = df["city"].str.title()
-    df.fillna({ #Retira os NaN e troca por outro valor
+    df.fillna({
         "city": "unknown", 
         "state": "unknown", 
         "created_at": "unknown", 
@@ -47,6 +47,7 @@ def transform_customers_data(df: pd.DataFrame) -> pd.DataFrame:
 
 def transform_orders_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
+    df["order_date"] = pd.to_datetime(df["order_date"], errors="coerce")
     df["amount"] = df["amount"].str.replace(',', ".")
     df["amount"] = pd.to_numeric(df["amount"], errors='coerce')
     df['amount_is_invalid'] = df['amount'] < 0 
@@ -69,9 +70,17 @@ def clean_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
 
 def rename_columns(df: pd.DataFrame, schema: str) -> pd.DataFrame:
     if schema == "customers":
-        return df.rename(columns={ "created_at": "ingestion_date" })
+        return df.rename(columns={ 
+            "created_at": "date",
+            "status": "customer_status"
+            })
+    
     elif schema == "orders":
-        return df.rename(columns={ "amount": "total_amount" })
+        return df.rename(columns={ 
+            "amount": "total_amount" ,
+            "order_date": "date",
+            "status": "order_status"
+            })
     else:
         raise Exception(f"{schema} does not exists")
     

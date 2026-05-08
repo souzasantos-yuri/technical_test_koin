@@ -1,6 +1,6 @@
 from src.extract_data import extract_data
 from src.transform_data import data_transformation
-from src.load_data import save_data
+from src.load_data import load_data
 from pathlib import Path
 import logging
 
@@ -21,7 +21,7 @@ def pipeline(schema: str):
         logging.info(f"Rows removed: {before - after}")
 
         logging.info(f"Last stage: Loading <{schema}> \n")
-        save_data(df, schema=schema)
+        load_data(df, schema=schema)
 
         logging.info(f"Pipeline for <{schema}> fully completed!")
         logging.info(f"Saved rows: {after}\n")
