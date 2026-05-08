@@ -2,6 +2,9 @@ import pandas as pd
 from pathlib import Path
 from utils import build_path
 from utils import save_csv
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 base_path = Path(__file__).parent.parent / "data"
 
@@ -22,4 +25,6 @@ datamart = (
     
 )
 
+logging.info(f"Saving in Gold <datamart>")
 save_csv(datamart, datamart_output_path)
+logging.info(f"Saved rows: {len(datamart)}")

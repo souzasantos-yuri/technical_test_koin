@@ -2,6 +2,9 @@ import pandas as pd
 from pathlib import Path
 from utils import build_path
 from utils import save_csv
+import logging 
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 base_path = Path(__file__).parent.parent / "data"
 
@@ -34,6 +37,14 @@ fact_transactions = fact_transactions.rename(
     columns={"order_date": "date"}
 )
 
+logging.info(f"Saving in Silver <dim_customers>")
 save_csv(dim_customers, customer_output_path)
+logging.info(f"Saved rows: {len(dim_customers)}\n")
+
+logging.info(f"Saving in Silver <dim_orders>")
 save_csv(dim_orders, order_output_path)
+logging.info(f"Saved rows: {len(dim_orders)}\n")
+
+logging.info(f"Saving in Silver <fact_transactions>")
 save_csv(fact_transactions, transaction_output_path)
+logging.info(f"Saved rows: {len(fact_transactions)}\n")
