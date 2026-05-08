@@ -10,7 +10,7 @@ def hash_value(value: str) -> str:
 
 def anonymize_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
     """
-    Applies SHA256 anonymization to sensitive customer fields.
+    Aplica anonimização de dados sensíveis via SHA256.
     """
 
     required_columns = ['email', 'phone', 'name']
@@ -30,6 +30,9 @@ def anonymize_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
     return df
 
 def transform_customers_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Transforma os dados de cliente e limpa os campos nulos.
+    """
     df["phone"] = df["phone"].astype(str)
     df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
     df["city"] = df["city"].str.title()
@@ -46,6 +49,9 @@ def transform_customers_data(df: pd.DataFrame) -> pd.DataFrame:
     return df 
 
 def transform_orders_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Transforma os dados de transações, deleta colunas desnecessárias.
+    """
     df = df.drop_duplicates()
     df["order_date"] = pd.to_datetime(df["order_date"], errors="coerce")
     df["amount"] = df["amount"].str.replace(',', ".")
@@ -62,6 +68,9 @@ def transform_orders_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
+    """
+    Faz o processo de limpeza dos dados com esquema dinâmico.
+    """
     if schema == "customers":
        return transform_customers_data(df)
     
@@ -69,6 +78,9 @@ def clean_data(df: pd.DataFrame, schema: str) -> pd.DataFrame:
        return transform_orders_data(df)
 
 def rename_columns(df: pd.DataFrame, schema: str) -> pd.DataFrame:
+    """
+    Renomeia as colunas.
+    """    
     if schema == "customers":
         return df.rename(columns={ 
             "created_at": "date",
@@ -85,6 +97,9 @@ def rename_columns(df: pd.DataFrame, schema: str) -> pd.DataFrame:
         raise Exception(f"{schema} does not exists")
     
 def data_transformation(df: pd.DataFrame, schema: str) -> pd.DataFrame:
+    """
+    Finaliza o processo de transformação fazendo um chain das funções criadas acima.
+    """    
     df = clean_data(df=df, schema=schema)
     df = anonymize_data(df=df, schema=schema)
     df = rename_columns(df=df, schema=schema)
